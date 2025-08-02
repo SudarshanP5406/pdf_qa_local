@@ -11,7 +11,7 @@ def load_pdf_to_vectorstore(pdf_path):
     splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     docs = splitter.split_documents(pages)
 
-    embeddings = OllamaEmbeddings(model="llama2")
+    embeddings = OllamaEmbeddings(model="nomic-embed-text")
     vectordb = Chroma.from_documents(docs, embeddings)
 
     return vectordb
