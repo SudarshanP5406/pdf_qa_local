@@ -1,17 +1,9 @@
-# pdf_loader.py
-from langchain.text_splitter import CharacterTextSplitter
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.embeddings import OllamaEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-def load_pdf_to_vectorstore(pdf_path):
-    loader = PyPDFLoader(pdf_path)
-    pages = loader.load_and_split()
-
-    splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-    docs = splitter.split_documents(pages)
-
-    embeddings = OllamaEmbeddings(model="nomic-embed-text")
-    vectordb = Chroma.from_documents(docs, embeddings)
-
-    return vectordb
+def load_pdf(file_path):
+    loader = PyPDFLoader(file_path)
+    documents = loader.load()
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+    docs = text_splitter.split_documents(documents)
+    return docs
